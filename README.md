@@ -1,5 +1,5 @@
 # SharedNearestNeighbors
-A Shared Nearest Neighbors clustering implementation. This code is basically a wrapper of sklearn DBSCAN, implementing the neighborhood similarity as a metric.
+A Shared Nearest Neighbors (Jarvis-patrick) clustering implementation. This code is basically a wrapper of sklearn DBSCAN, implementing the neighborhood similarity as a metric.
 
 ## Examples
 
@@ -17,6 +17,48 @@ y_pred = snn.fit_predict(X)
 ```
 
 ![](imgs/D31.png)
+
+
+```python
+snn = SNN(n_neighbors = 35,eps = 25, min_samples = 8)
+y_pred = snn.fit_predict(X)
+
+```
+![](imgs/aggregation.png)
+
+
+```python
+snn = SNN(n_neighbors = 160,eps = 120, min_samples = 30)
+y_pred = snn.fit_predict(X)
+
+```
+![](imgs/t4-8k.png)
+
+
+```python
+snn = SNN(n_neighbors = 160,eps = 120, min_samples = 35)
+y_pred = snn.fit_predict(X)
+
+```
+![](imgs/t7-10k.png)
+
+
+```python
+snn = SNN(n_neighbors = 4, eps = 2, min_samples = 2)
+y_pred = snn.fit_predict(X)
+```
+![](imgs/3-spiral.png)
+
+```python
+snn = SNN(n_neighbors = 15, eps = 7, min_samples = 12)
+y_pred = snn.fit_predict(X)
+```
+![](imgs/DS-850.png)
+
+## To-do list
+
+- [ ] Add weighted option for similarity between neighbors
+
 
 ## References
 
