@@ -29,6 +29,9 @@ class SharedNearestNeighbor:
         self.min_samples = min_samples
         self.n_jobs = n_jobs
         self.n_neighbors = n_neighbors
+        self.labels_ = []
+        self.components_ = []
+        self.core_sample_indices_ = []
 
     def fit(self,X):
         """
@@ -44,7 +47,11 @@ class SharedNearestNeighbor:
         self.similarity_matrix.data = max_similarity - self.similarity_matrix.data
 
         self.dbscan = DBSCAN(eps = max_similarity - self.eps, min_samples = self.min_samples,metric = "precomputed", n_jobs = self.n_jobs)
-        return self.dbscan.fit(self.similarity_matrix)
+        self.dbscan.fit(self.similarity_matrix)
+        self.labels_ = self.dbscan.labels_
+        self.components_ = self.dbscan.components_
+        self.core_sample_indices_ = self.dbscan.core_sample_indices_
+        return 
     
     def fit_predict(self,X):
         """
@@ -59,6 +66,10 @@ class SharedNearestNeighbor:
         self.similarity_matrix.data = max_similarity - self.similarity_matrix.data
 
         self.dbscan = DBSCAN(eps = max_similarity - self.eps, min_samples = self.min_samples,metric = "precomputed", n_jobs = self.n_jobs)
-        return self.dbscan.fit_predict(self.similarity_matrix)
+        y = self.dbscan.fit_predict(self.similarity_matrix)
+        self.labels_ = self.dbscan.labels_
+        self.components_ = self.dbscan.components_
+        self.core_sample_indices_ = self.dbscan.core_sample_indices_
+        return y
         
         
