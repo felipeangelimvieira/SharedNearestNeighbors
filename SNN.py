@@ -16,7 +16,7 @@ class SharedNearestNeighbor:
     Ertöz, L., Steinbach, M., & Kumar, V. (2003, May). Finding clusters of different sizes, shapes, and densities in noisy, high dimensional data. In Proceedings of the 2003 SIAM international conference on data mining (pp. 47-58). Society for Industrial and Applied Mathematics.
     """
 
-    def __init__(self,n_neighbors = 7, eps = 5, min_samples = 5,n_jobs = 1):
+    def __init__(self,n_neighbors = 7, eps = 5, min_samples = 5,n_jobs = 1, algorithm = 'auto', leaf_size = 30, metric = 'minkowski', p = 2, metric_params = None):
         """
         @param n_neighbors: number of neighbors to consider when calculating the shared nearest neighbors
         @param eps: threshold on the number of neighbors
@@ -24,7 +24,7 @@ class SharedNearestNeighbor:
         @param n_jobs: number of parallel jobs
         @return an instance of SharedNearestNeighbor class
         """
-        self.neigh =  NearestNeighbors(n_neighbors = n_neighbors, n_jobs = n_jobs)
+        self.neigh =  NearestNeighbors(n_neighbors = n_neighbors, n_jobs = n_jobs, algorithm= algorithm, leaf_size= leaf_size, metric= metric, p = p, metric_params= metric_params)
         self.eps = eps
         self.min_samples = min_samples
         self.n_jobs = n_jobs
