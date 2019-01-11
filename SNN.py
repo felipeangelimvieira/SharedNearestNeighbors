@@ -61,7 +61,7 @@ class SharedNearestNeighbor:
         self.neigh.fit(X)
         graph = self.neigh.kneighbors_graph(X)
         self.similarity_matrix = graph*graph.transpose()
-        self.mask = self.similarity_matrix > self.eps
+        self.mask = self.similarity_matrix.data > self.eps
         max_similarity = self.similarity_matrix[0,0]
         self.similarity_matrix.data = max_similarity - self.similarity_matrix.data
 
