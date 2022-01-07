@@ -170,5 +170,7 @@ class SNN(ClusterMixin, BaseEstimator):
         graph = self.neigh.kneighbors_graph(X, mode="connectivity")
         similarity_matrix = graph * graph.transpose()
         similarity_matrix.sort_indices()
+
+        # The lower the "closer"
         similarity_matrix.data = self.n_neighbors - similarity_matrix.data
         return similarity_matrix
