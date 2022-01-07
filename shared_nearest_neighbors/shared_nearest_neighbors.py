@@ -91,6 +91,27 @@ class SNN(ClusterMixin, BaseEstimator):
         self.p = p
         self.metric_params = metric_params
 
+        self.neigh = NearestNeighbors(
+            n_neighbors=self.n_neighbors,
+            n_jobs=self.n_jobs,
+            algorithm=self.algorithm,
+            leaf_size=self.leaf_size,
+            metric=self.metric,
+            p=self.p,
+            metric_params=self.metric_params,
+        )
+
+        # In DBSCAN, eps is an upper bound of the distance between two points.
+        # In terms of similarity, it would an "lower bound" on the similarity
+        # or upper bound on the difference between the max similarity value and
+        # the similarity between two points
+        self.dbscan = DBSCAN(
+            eps=self.n_neighbors - self.eps,
+            min_samples=self.min_samples,
+            metric="precomputed",
+            n_jobs=self.n_jobs,
+        )
+
     def fit(self, X, y=None, sample_weight=None):
         """Perform SNN clustering from features or distance matrix
 
@@ -118,31 +139,10 @@ class SNN(ClusterMixin, BaseEstimator):
             Returns a fitted instance of self.
         """
 
-        self.neigh = NearestNeighbors(
-            n_neighbors=self.n_neighbors,
-            n_jobs=self.n_jobs,
-            algorithm=self.algorithm,
-            leaf_size=self.leaf_size,
-            metric=self.metric,
-            p=self.p,
-            metric_params=self.metric_params,
-        )
-
         self.similarity_matrix = self.neighborhood_similarity_matrix(X)
 
-        # In DBSCAN, eps is an upper bound of the distance between two points.
-        # In terms of similarity, it would an "lower bound" on the similarity
-        # or upper bound on the difference between the max similarity value and
-        # the similarity between two points
-        self.dbscan = DBSCAN(
-            eps=self.n_neighbors - self.eps,
-            min_samples=self.min_samples,
-            metric="precomputed",
-            n_jobs=self.n_jobs,
-            sample_weight=sample_weight,
-        )
+        self.dbscan.fit(self.similarity_matrix, sample_weight=sample_weight)
 
-        self.dbscan.fit(self.similarity_matrix)
         self.labels_ = self.dbscan.labels_
         self.components_ = self.dbscan.components_
         self.core_sample_indices_ = self.dbscan.core_sample_indices_
@@ -170,5 +170,5 @@ class SNN(ClusterMixin, BaseEstimator):
         graph = self.neigh.kneighbors_graph(X, mode="connectivity")
         similarity_matrix = graph * graph.transpose()
         similarity_matrix.sort_indices()
-        similarity_matrix.data = self.n_neighbors - self.similarity_matrix.data
+        similarity_matrix.data = self.n_neighbors - similarity_matrix.data
         return similarity_matrix
