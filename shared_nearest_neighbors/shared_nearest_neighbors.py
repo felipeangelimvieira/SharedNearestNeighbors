@@ -2,7 +2,29 @@ from sklearn.base import ClusterMixin, BaseEstimator
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
 import numpy as np
-from scipy.sparse import csr_matrix
+from scipy.sparse import csr_matrix, spdiags
+
+def snn_dissimilarity_func(graph : csr_matrix, n_neighbors : int, *args, **kwargs) -> csr_matrix:
+    """Default SNN dissimilarity function
+
+    Computes the dissimilarity between two points in terms of shared nearest neighbors
+
+    Args:
+        graph (scipy.sparse.csr_matrix): sparse matrix with dimensions (n_samples, n_samples),
+         where the element ij represents the distance between the point i and j 
+        n_neighbors (int): number of neighbors in the k-neighborhood search
+    """ 
+
+    graph.data[graph.data > 0] = 1
+    n_samples = graph.shape[0]
+    graph += spdiags(np.ones(n_samples), diags=0, m=n_samples, n=n_samples)
+    matrix = graph * graph.transpose()
+    matrix.sort_indices()
+
+    # The lower the "closer"
+    matrix.data = n_neighbors - matrix.data
+
+    return matrix
 
 
 class SNN(ClusterMixin, BaseEstimator):
@@ -16,6 +38,7 @@ class SNN(ClusterMixin, BaseEstimator):
         metric="euclidean",
         p=None,
         metric_params=None,
+        dissimilarity_func=snn_dissimilarity_func,
         n_jobs=None,
     ):
         """Shared Nearest Neighbor clustering  algorithm for finding clusters or different sizes, shapes and densities in
@@ -30,10 +53,12 @@ class SNN(ClusterMixin, BaseEstimator):
         ----------
         n_neighbors : int, optional
             The number of neighbors to construct the neighborhood graph, including the point itself. By default 7
+
         eps : int, optional
             The minimum number of neighbors two points have to share in order to be
             connected by an edge in the neighborhood graph. This value has to be smaller
             than n_neighbors. By default 5
+
         min_samples : int, optional
             The number of samples (or total weight) in a neighborhood for a point
             to be considered as a core point. This includes the point itself, by default 5
@@ -42,8 +67,10 @@ class SNN(ClusterMixin, BaseEstimator):
             The algorithm to be used by the NearestNeighbors module
             to compute pointwise distances and find nearest neighbors.
             See NearestNeighbors module documentation for details., by default "auto"
+
         leaf_size : int, optional
             [description], by default 30
+
         metric : str, or callable
             The metric to use when calculating distance between instances in a
             feature array. If metric is a string or callable, it must be one of
@@ -53,21 +80,45 @@ class SNN(ClusterMixin, BaseEstimator):
             must be square. X may be a :term:`Glossary <sparse graph>`, in which
             case only "nonzero" elements may be considered neighbors for DBSCAN.
             Default to "euclidean"
+
         p : int, optional
             The power of the Minkowski metric to be used to calculate distance
             between points. If None, then ``p=2`` (equivalent to the Euclidean
             distance).
+
         metric_params : [type], optional
             Additional keyword arguments for the metric function., by default None
+
         n_jobs : int, optional
             The number of parallel jobs to run.
             ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
             ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
             for more details. Default None.
 
+        dissimilarity_func: Callable, optional
+            A function that receives two inputs: scipy.sparse.csr_matrix with the k-neighbors distance and the n_neighbors attribute;
+            and returns another csr_matrix
+
         Attributes
         ----------
+        
+        neigh : sklearn.neighbors.NearestNeighbors 
+        
+        dbscan : sklearn.cluster.DBSCAN
 
+        labels_ : ndarray of shape (n_samples)
+            Cluster labels for each point in the dataset given to fit().
+            Noisy samples are given the label -1.
+            
+        components_ : ndarray of shape (n_core_samples, n_features)
+
+        Copy of each core sample found by training.
+
+        core_samples_indices_ : ndarray of shape (n_core_samples,)
+            Indices of core samples.
+
+        dissimilarity_matrix : scipy.sparse.csr_matrix 
+            containing the dissimilarity between points
 
         References
         ----------
@@ -80,6 +131,8 @@ class SNN(ClusterMixin, BaseEstimator):
 
         if eps <= 0:
             raise ValueError("Eps must be positive.")
+        if eps >= n_neighbors and dissimilarity_func == snn_dissimilarity_func:
+            raise  ValueError("Eps must be smaller than n_neighbors.")
 
         self.eps = eps
         self.min_samples = min_samples
@@ -90,7 +143,7 @@ class SNN(ClusterMixin, BaseEstimator):
         self.metric = metric
         self.p = p
         self.metric_params = metric_params
-
+        self.dissimilarity_func = dissimilarity_func
         self.neigh = NearestNeighbors(
             n_neighbors=self.n_neighbors,
             n_jobs=self.n_jobs,
@@ -101,9 +154,10 @@ class SNN(ClusterMixin, BaseEstimator):
             metric_params=self.metric_params,
         )
 
+        # Reasoning behind eps=self.n_neighbors - self.eps:
         # In DBSCAN, eps is an upper bound of the distance between two points.
         # In terms of similarity, it would an "lower bound" on the similarity
-        # or upper bound on the difference between the max similarity value and
+        # or, once again, upper bound on the difference between the max similarity value and
         # the similarity between two points
         self.dbscan = DBSCAN(
             eps=self.n_neighbors - self.eps,
@@ -139,16 +193,26 @@ class SNN(ClusterMixin, BaseEstimator):
             Returns a fitted instance of self.
         """
 
-        self.similarity_matrix = self.neighborhood_similarity_matrix(X)
+        self.dissimilarity_matrix = self.neighborhood_dissimilarity_matrix(X)
 
-        self.dbscan.fit(self.similarity_matrix, sample_weight=sample_weight)
+        self.dbscan.fit(self.dissimilarity_matrix, sample_weight=sample_weight)
 
-        self.labels_ = self.dbscan.labels_
-        self.components_ = self.dbscan.components_
-        self.core_sample_indices_ = self.dbscan.core_sample_indices_
         return self
 
-    def neighborhood_similarity_matrix(self, X) -> csr_matrix:
+    @property
+    def labels_(self):
+        return self.dbscan.labels_
+    
+    @property
+    def components_(self):
+        return self.dbscan.components_
+
+    @property
+    def core_sample_indices_(self):
+        return self.dbscan.core_sample_indices_
+
+
+    def neighborhood_dissimilarity_matrix(self, X) -> csr_matrix:
         """Neighborhood similarity matrix
 
         Computes the sparse neighborhood similarity matrix
@@ -167,10 +231,6 @@ class SNN(ClusterMixin, BaseEstimator):
         """
 
         self.neigh.fit(X)
-        graph = self.neigh.kneighbors_graph(X, mode="connectivity")
-        similarity_matrix = graph * graph.transpose()
-        similarity_matrix.sort_indices()
-
-        # The lower the "closer"
-        similarity_matrix.data = self.n_neighbors - similarity_matrix.data
-        return similarity_matrix
+        graph = self.neigh.kneighbors_graph(X, mode="distance")
+        dissimilarity_matrix = self.dissimilarity_func(graph, self.n_neighbors)
+        return dissimilarity_matrix

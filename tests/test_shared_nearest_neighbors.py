@@ -29,10 +29,15 @@ def one_dimensional_data():
     )
 
 
-def test_snn_clustering(clustered_data, n_clusters):
-    snn = SNN(n_neighbors=10, eps=3, min_samples=10, metric="euclidean")
-    snn.fit(clustered_data)
+def test_bad_eps():
 
+    with pytest.raises(ValueError):
+        snn = SNN(n_neighbors=10, eps=10, min_samples=30, metric="euclidean")
+
+def test_snn_clustering(clustered_data, n_clusters):
+    snn = SNN(n_neighbors=10, eps=5, min_samples=10, metric="euclidean")
+    snn.fit(clustered_data)
+    
     labels = snn.labels_
     n_clusters_out = len(set(labels)) - int(-1 in labels)
     assert n_clusters == n_clusters_out
@@ -41,9 +46,9 @@ def test_snn_clustering(clustered_data, n_clusters):
 def test_similarity_matrix(one_dimensional_data):
     n_neighbors = 2
     snn = SNN(n_neighbors=n_neighbors, eps=0.5, min_samples=1)
-    similarity_matrix = snn.neighborhood_similarity_matrix(one_dimensional_data)
+    dissimilarity_matrix = snn.neighborhood_dissimilarity_matrix(one_dimensional_data)
+    
     shared_neighbors = np.array([[2, 2, 1], [2, 2, 1], [1, 1, 2]])
+    expected = n_neighbors - shared_neighbors
 
-    dissimilarity = n_neighbors - shared_neighbors
-
-    assert np.all(np.isclose(similarity_matrix.toarray(), dissimilarity))
+    assert np.all(np.isclose(dissimilarity_matrix.toarray(), expected))
