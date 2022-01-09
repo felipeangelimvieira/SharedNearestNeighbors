@@ -1,10 +1,47 @@
-from distutils.core import setup
+#!/usr/bin/env python
 
-setup(name='SharedNearestNeighbor',
-      version='0.1',
-      description='Shared Nearest Neighbor in Python',
-      author='Felipe Vieira',
-      author_email='felipeangelim.ml@gmail.com',
-      url='https://www.python.org/sigs/distutils-sig/',
-      packages=[],
-     )
+"""The setup script."""
+
+from pathlib import Path
+from setuptools import setup, find_packages
+from shared_nearest_neighbors import __version__, __author__, __email__
+
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+
+requirements=["scikit-learn>=0.20.0", "numpy>=1.18.0"]
+
+test_requirements = ['pytest>=3', ]
+
+setup(
+    author=__author__,
+    author_email=__email__,
+    python_requires='>=3.6',
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ],
+    description="SNN Algorithm",
+    install_requires=requirements,
+    license="MIT license",
+    long_description=readme + '\n\n' + history,
+    include_package_data=True,
+    keywords='shared_nearest_neighbors',
+    name='shared_nearest_neighbors',
+    packages=find_packages(include=['shared_nearest_neighbors', 'shared_nearest_neighbors.*']),
+    test_suite='tests',
+    tests_require=test_requirements,
+    url='https://github.com/felipeangelimvieira/shared_nearest_neighbors',
+    version=__version__,
+    zip_safe=False,
+)
