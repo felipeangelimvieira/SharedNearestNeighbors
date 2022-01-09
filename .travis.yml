@@ -26,6 +26,7 @@ deploy:
   user: felipeangelimvieira
   password: env(pypi_token)
   on:
+    branch: main
     tags: true
     repo: felipeangelim/shared_nearest_neighbors
     python: 3.8

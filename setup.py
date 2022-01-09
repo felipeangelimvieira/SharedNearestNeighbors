@@ -2,6 +2,7 @@
 
 """The setup script."""
 
+from pathlib import Path
 from setuptools import setup, find_packages
 from shared_nearest_neighbors import __version__, __author__, __email__
 
@@ -12,7 +13,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 
-with open("requirements.txt", "r") as requirements_file:
+with open(Path(__file__).parent / Path("requirements.txt"), "r") as requirements_file:
     requirements = requirements_file.readlines()
 
 test_requirements = ['pytest>=3', ]
