@@ -1,7 +1,7 @@
+import numpy as np
 from sklearn.base import ClusterMixin, BaseEstimator
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
-import numpy as np
 from scipy.sparse import csr_matrix, spdiags
 
 def snn_dissimilarity_func(graph : csr_matrix, n_neighbors : int, *args, **kwargs) -> csr_matrix:
