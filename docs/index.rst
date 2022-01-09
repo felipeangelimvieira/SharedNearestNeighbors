@@ -5,7 +5,7 @@ Welcome to Shared Nearest Neighbors's documentation!
 .. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    installation
@@ -13,10 +13,4 @@ Welcome to Shared Nearest Neighbors's documentation!
    contributing
    history
    
-   
 
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
