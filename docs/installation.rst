@@ -12,7 +12,7 @@ To install Shared Nearest Neighbors, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install shared_nearest_neighbors
+    $ pip install shared-nearest-neighbors
 
 This is the preferred method to install Shared Nearest Neighbors, as it will always install the most recent stable release.
 

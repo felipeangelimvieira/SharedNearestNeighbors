@@ -14,10 +14,6 @@ Shared Nearest Neighbors
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/felipeangelimvieira/shared_nearest_neighbors/shield.svg
-     :target: https://pyup.io/repos/github/felipeangelimvieira/shared_nearest_neighbors/
-     :alt: Updates
-
 
 
 
