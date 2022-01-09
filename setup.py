@@ -3,6 +3,7 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+from shared_nearest_neighbors import __version__, __author__, __email__
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -10,13 +11,13 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+requirements = []# "sklearn>=0.20.0", "numpy>=1.18.0"]
 
 test_requirements = ['pytest>=3', ]
 
 setup(
-    author="Felipe L Angelim Vieira",
-    author_email='felipeangelim@gmail.com',
+    author=__author__,
+    author_email=__email__,
     python_requires='>=3.6',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -39,6 +40,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/felipeangelimvieira/shared_nearest_neighbors',
-    version='0.1.0',
+    version=__version__,
     zip_safe=False,
 )
