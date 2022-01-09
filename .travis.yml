@@ -3,8 +3,8 @@
 language: python
 python:
   - 3.8
-  - 3.7
-  - 3.6
+#  - 3.7
+#  - 3.6
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -20,9 +20,8 @@ deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   user: felipeangelimvieira
-  password:
-    secure: PLEASE_REPLACE_ME
+  password: env(pypi_token)
   on:
     tags: true
-    repo: felipeangelimvieira/shared_nearest_neighbors
+    repo: felipeangelim/shared_nearest_neighbors
     python: 3.8
