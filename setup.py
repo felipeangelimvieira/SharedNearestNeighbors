@@ -13,8 +13,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 
-with open(Path(__file__).parent / Path("requirements.txt"), "r") as requirements_file:
-    requirements = requirements_file.readlines()
+requirements=["scikit-learn>=0.20.0", "numpy>=1.18.0"]
 
 test_requirements = ['pytest>=3', ]
 
