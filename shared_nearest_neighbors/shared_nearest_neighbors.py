@@ -17,6 +17,8 @@ def snn_dissimilarity_func(graph : csr_matrix, n_neighbors : int, *args, **kwarg
 
     graph.data[graph.data > 0] = 1
     n_samples = graph.shape[0]
+
+    # Add the point as its own neighbor
     graph += spdiags(np.ones(n_samples), diags=0, m=n_samples, n=n_samples)
     matrix = graph * graph.transpose()
     matrix.sort_indices()
