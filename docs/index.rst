@@ -7,11 +7,11 @@ Welcome to Shared Nearest Neighbors's documentation!
 
    readme
    installation
-   usage
-   modules
+   example/snn_usage
    contributing
-   authors
    history
+   
+   
 
 Indices and tables
 ==================
