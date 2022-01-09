@@ -1,4 +1,7 @@
 # Config file for automatic testing at travis-ci.com
+branches:
+  only:
+  - master
 
 language: python
 python:
@@ -7,7 +10,7 @@ python:
 #  - 3.6
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements.txt && pip install tox-travis
+install: pip install -U -r requirements.txt && pip install -U tox-travis
 
 # Command to run tests, e.g. python setup.py test
 script: tox
