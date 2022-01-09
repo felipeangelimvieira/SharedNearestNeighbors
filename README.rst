@@ -20,22 +20,11 @@ Shared Nearest Neighbors
 
 
 
-SNN Algorithm
 
+A Shared Nearest Neighbors (Jarvis-patrick) clustering implementation. This code is basically a wrapper of sklearn DBSCAN, implementing the neighborhood similarity as a metric.
+The implementation follows the syntax of scikit-learn clustering classes.
 
 * Free software: MIT license
 * Documentation: https://shared-nearest-neighbors.readthedocs.io.
 
 
-Features
---------
-
-* TODO
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
