@@ -21,6 +21,6 @@ A Shared Nearest Neighbors (Jarvis-patrick) clustering implementation. This code
 The implementation follows the syntax of scikit-learn clustering classes.
 
 * Free software: MIT license
-* Documentation: https://shared-nearest-neighbors.readthedocs.io.
+* Documentation: https://sharednearestneighbors.readthedocs.io.
 
 
