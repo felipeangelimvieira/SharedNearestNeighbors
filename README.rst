@@ -6,11 +6,11 @@ Shared Nearest Neighbors
 .. image:: https://img.shields.io/pypi/v/shared_nearest_neighbors.svg
         :target: https://pypi.python.org/pypi/shared_nearest_neighbors
 
-.. image:: https://img.shields.io/travis/felipeangelimvieira/shared_nearest_neighbors.svg
-        :target: https://travis-ci.com/felipeangelimvieira/shared_nearest_neighbors
+.. image:: https://img.shields.io/travis/felipeangelimvieira/SharedNearestNeighbors.svg
+        :target: https://travis-ci.com/felipeangelimvieira/SharedNearestNeighbors
 
-.. image:: https://readthedocs.org/projects/shared-nearest-neighbors/badge/?version=latest
-        :target: https://shared-nearest-neighbors.readthedocs.io/en/latest/?version=latest
+.. image:: https://readthedocs.org/projects/sharednearestneighbors/badge/?version=latest
+        :target: https://sharednearestneighbors.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
 
