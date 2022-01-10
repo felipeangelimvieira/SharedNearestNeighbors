@@ -2,6 +2,7 @@
 branches:
   only:
   - main
+  - /v\d+\.\d+\.\d+[a-z]/
 
 language: python
 python:
