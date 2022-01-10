@@ -7,7 +7,7 @@ Shared Nearest Neighbors
         :target: https://pypi.python.org/pypi/shared_nearest_neighbors
 
 .. image:: https://img.shields.io/travis/felipeangelimvieira/SharedNearestNeighbors.svg
-        :target: https://travis-ci.com/felipeangelimvieira/SharedNearestNeighbors
+        :target: https://app.travis-ci.com/github/felipeangelimvieira/SharedNearestNeighbors
 
 .. image:: https://readthedocs.org/projects/sharednearestneighbors/badge/?version=latest
         :target: https://sharednearestneighbors.readthedocs.io/en/latest/?version=latest
