@@ -28,5 +28,5 @@ deploy:
   on:
     branch: main
     tags: true
-    repo: felipeangelim/shared_nearest_neighbors
+    repo: felipeangelim/SharedNearestNeighbors
     python: 3.8
