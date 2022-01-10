@@ -1,9 +1,3 @@
-# Config file for automatic testing at travis-ci.com
-branches:
-  only:
-  - main
-  - /v\d+\.\d+\.\d+[a-z]/
-
 language: python
 python:
   - 3.8
