@@ -10,7 +10,7 @@ Welcome to Shared Nearest Neighbors's documentation!
 
    installation
    example/snn_usage
+   reference
    contributing
    history
    
-

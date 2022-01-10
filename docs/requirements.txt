@@ -1,3 +1,4 @@
 nbsphinx
 pandoc
+sphinx-rtd-theme
 -r ../requirements_dev.txt
