@@ -7,7 +7,7 @@ Shared Nearest Neighbors
         :target: https://pypi.python.org/pypi/shared_nearest_neighbors
 
 .. image:: https://img.shields.io/travis/felipeangelimvieira/SharedNearestNeighbors.svg
-        :target: https://travis-ci.com/felipeangelimvieira/SharedNearestNeighbors
+        :target: https://app.travis-ci.com/github/felipeangelimvieira/SharedNearestNeighbors
 
 .. image:: https://readthedocs.org/projects/sharednearestneighbors/badge/?version=latest
         :target: https://sharednearestneighbors.readthedocs.io/en/latest/?version=latest
@@ -21,6 +21,6 @@ A Shared Nearest Neighbors (Jarvis-patrick) clustering implementation. This code
 The implementation follows the syntax of scikit-learn clustering classes.
 
 * Free software: MIT license
-* Documentation: https://shared-nearest-neighbors.readthedocs.io.
+* Documentation: https://sharednearestneighbors.readthedocs.io.
 
 
