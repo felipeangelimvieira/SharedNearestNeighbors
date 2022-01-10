@@ -21,7 +21,7 @@ deploy:
   skip_cleanup: true
   provider: pypi
   distributions: sdist bdist_wheel
-  user: felipeangelimvieira
+  user: felipeangelim
   password: env(pypi_token)
   on:
     branch: main
